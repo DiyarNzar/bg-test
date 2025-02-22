@@ -1,13 +1,52 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const starCount = 100;
-    const body = document.body;
+let display = document.getElementById('display');
+let currentOperation = '';
+let firstOperand = '';
+let secondOperand = '';
 
-    for (let i = 0; i < starCount; i++) {
-        const star = document.createElement('div');
-        star.className = 'star';
-        star.style.top = `${Math.random() * 100}vh`;
-        star.style.left = `${Math.random() * 100}vw`;
-        star.style.animationDuration = `${Math.random() * 5 + 5}s`;
-        body.appendChild(star);
+function appendToDisplay(value) {
+    display.value += value;
+}
+
+function setOperation(operation) {
+    if (currentOperation === '') {
+        firstOperand = display.value;
+        display.value = '';
+        currentOperation = operation;
+    } else {
+        secondOperand = display.value;
+        calculateResult();
+        currentOperation = operation;
     }
-});
+}
+
+function calculateResult() {
+    if (currentOperation !== '' && display.value !== '') {
+        secondOperand = display.value;
+        let result;
+        switch (currentOperation) {
+            case '+':
+                result = parseFloat(firstOperand) + parseFloat(secondOperand);
+                break;
+            case '-':
+                result = parseFloat(firstOperand) - parseFloat(secondOperand);
+                break;
+            case '*':
+                result = parseFloat(firstOperand) * parseFloat(secondOperand);
+                break;
+            case '/':
+                result = parseFloat(firstOperand) / parseFloat(secondOperand);
+                break;
+        }
+        display.value = result;
+        currentOperation = '';
+        firstOperand = '';
+        secondOperand = '';
+    }
+}
+
+function clearDisplay() {
+    display.value = '';
+    currentOperation = '';
+    firstOperand = '';
+    secondOperand = '';
+}
